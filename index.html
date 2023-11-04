@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(135, 186, 210);
+        }
+
+        h1 {
+            color: black;
+        }
+
+        fieldset {
+            color: black;
+            margin: 20px;
+        }
+
+        legend {
+            display: block;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: 3px solid green;
+            background-color: tomato;
+            color: white;
+        }
+
+        fieldset {
+            background-color: #eeeeee;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Практическая работа №17</h1>
+    <p>Мажитов Фархат</p>
+    <p>По2210к</p>
+    <fieldset>
+        <legend>Задание 1</legend>
+        <p>Создать галерею изображений, где изображения переключаются при
+            нажатии на кнопки "Следующее" и "Предыдущее".</p>
+        <button id="nextBtn">Следующее</button>
+        <button id="prevBtn">Предыдущее</button>
+        <img id="gallery" src="image1.jpg" width="500" height="500" />
+    </fieldset>
+    <fieldset>
+        <legend>Задание 2</legend>
+        <p>. Создать анимацию, при которой элемент изменяет свой размер и цвет при
+            наведении курсора.</p>
+        <div id="animatedElement" style="width: 100px; height: 100px; background-color: red;"></div>
+    </fieldset>
+    <fieldset>
+        <legend>Задание 3</legend>
+        <p>Разработать бесконечную анимацию элемента, которая двигается по экрану с
+            заданной скоростью.</p>
+        <div id="movingElement" style="position: absolute; left: -100px; top: 50px; width: 50px; height: 50px; background-color: red;"></div>
+    </fieldset>
+    <fieldset>
+        <legend>Задание 4</legend>
+        <p>Сделать анимацию "выезжающего" меню, которое появляется сбоку при
+            нажатии на кнопку.</p>
+        <button id="toggleBtn">Нажми меня</button>
+        <div id="sideMenu" style="position: fixed; top: 0; left: -200px; width: 200px; height: 100%; background-color: lightgray;"></div>
+    </fieldset>
+    <fieldset>
+        <legend>Задание 5</legend>
+        <p>Создать форму для отправки данных на сервер и обработать ответ с использованием AJAX, например, получить и отобразить данные в блоке на странице.</p>
+        <input type="text" id="nameInput" placeholder="Ваше имя">
+        <input type="text" id="emailInput" placeholder="Ваш email">
+        <button id="sendBtn">Отправить</button>
+        <div id="resultBlock"></div>
+    </fieldset>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // Задача 1
+        $(document).ready(function(){
+            var images = ["image1.jpg", "image2.jpg", "image3.jpg"];
+            var currentImage = 0;
+
+            function showImage(index) {
+                $("#gallery").attr("src", images[index]);
+            }
+
+            $("#nextBtn").click(function(){
+                currentImage = (currentImage + 1) % images.length;
+                showImage(currentImage);
+            });
+
+            $("#prevBtn").click(function(){
+                currentImage = (currentImage - 1 + images.length) % images.length;
+                showImage(currentImage);
+            });
+        });
+
+        // Задача 2
+        $(document).ready(function(){
+            $("#animatedElement").hover(function(){
+                $(this).animate({
+                    width: "300px",
+                    height: "300px",
+                    backgroundColor: "blue"
+                }, 500);
+            }, function(){
+                $(this).animate({
+                    width: "100px",
+                    height: "100px",
+                    backgroundColor: "red"
+                }, 500);
+            });
+        });
+
+        // Задача 3
+        $(document).ready(function(){
+            function animateElement() {
+                $("#movingElement").animate({left: '100%'}, 5000, 'linear', function(){
+                    $(this).css('left', '-100px');
+                    animateElement();
+                });
+            }
+            animateElement();
+        });
+
+        // Задача 4
+        let menuVisible = false;
+            $("#toggleBtn").click(function () {
+                if (!menuVisible) {
+                    $("#sideMenu").animate({ left: '0' }, 'fast');
+                    menuVisible = true;
+                } else {
+                    $("#sideMenu").animate({ left: '-200px' }, 'fast');
+                    menuVisible = false;
+                }
+            });
+
+        // Задача 5
+        $(document).ready(function(){
+            $("#submitBtn").click(function(){
+                var data = {
+                    name: $("#nameInput").val(),
+                    email: $("#emailInput").val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "https://mrlordfarquad.github.io/lab17/",
+                    data: data,
+                    success: function(response){
+                        $("#resultBlock").text(response);
+                    }
+                });
+            });
+        });
+    </script>
+    </script>
+</body>
+</html>
